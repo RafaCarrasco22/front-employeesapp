@@ -16,3 +16,17 @@ export const getRegions = () => {
         }
     )
 }
+
+export const getEmployees = () => {
+    return axiosInstance.get(
+        `/employees/all`
+    ).then(
+        data => {
+            return data;
+        }
+    ).catch(
+        error => {
+            return error;
+        }
+    )
+}

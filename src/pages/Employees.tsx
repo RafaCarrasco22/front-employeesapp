@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
-import Title from '../layout/title';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
@@ -10,6 +8,11 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import { getEmployees} from '../services/config/consults';
+import { AppBar, Badge, IconButton, Toolbar } from '@material-ui/core';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import StickyHeadTable from '../components/Table';
+import TransitionsModal from '../components/Formulario';
 
 
 
@@ -22,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
+    padding: theme.spacing(5, 0, 1),
   },
   heroButtons: {
     marginTop: theme.spacing(4),
@@ -56,49 +59,56 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
+  toolbar: {
+    paddingRight: 24, // keep right padding when drawer closed
+  },
+  toolbarIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
 }));
 
-export default function Persons() {
+export default function Employees() {
   const classes = useStyles();
+  useEffect(() => {
+    getEmployees().then(response => {
+      console.log(response.data);
+    });
+}, []);
   
   return (
     <React.Fragment>
-        <div className='persons'>
+        <div className={classes.heroContent}>
+          <Container maxWidth="sm" style={{flex:1,
+                flexDirection:'row',
+                alignItems:'center',
+                justifyContent:'center',}}>
+            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+              Empleados
+            </Typography>
+            <Typography align="center" color="textPrimary" gutterBottom>
+            <TransitionsModal/>
+            </Typography>
+            
+            
+          
+          </Container>
+        </div>
+ 
+        <Container className={classes.cardGrid} maxWidth="md">
         
-        
-      <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
-          <Grid container spacing={4}>
-            
-              <Grid item  xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://imagenes.milenio.com/e9l0w0jhOVnzoPEhHF4eBPf0jUc=/958x596/smart/https://www.milenio.com/uploads/media/2019/09/19/personajes-breaking-bad-regresaran-camino_17_0_610_379.jpg"
-                    title="Personajes"
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Personajes
-                    </Typography>
-                    <Typography>
-                      List of Personajes
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="primary" href="./personajes">
-                      View
-                    </Button>
-                  </CardActions>
-                </Card>
+          {/* <FormRow></FormRow> */}
+          <Grid container item xs={12} spacing={3}>
+                <StickyHeadTable />
               </Grid> 
-              
-            
-          </Grid>
         </Container>
           
        
-        </div>
+      
       
     </React.Fragment>
   );

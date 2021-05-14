@@ -32,7 +32,7 @@ export const SidebarData = [
   },
   {
     title: 'Empleados',
-    path: '/messages',
+    path: '/empleados',
     icon: <SupervisorAccountIcon />,
     cName: 'nav-text'
   }
