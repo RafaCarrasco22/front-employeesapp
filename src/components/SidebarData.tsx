@@ -26,7 +26,7 @@ export const SidebarData = [
   },
   {
     title: 'Departamentos',
-    path: '/team',
+    path: '/departamentos',
     icon: <BusinessIcon />,
     cName: 'nav-text'
   },

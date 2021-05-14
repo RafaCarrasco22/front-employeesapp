@@ -7,6 +7,7 @@ import Dashboard from './layout/Dashboard';
 import Persons from './pages/Persons';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
+import Departamentos from './pages/Departamentos';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.render(
         <Switch>
           <Route path='/' exact component={Home} />
           <Route path='/persons' component={Persons} />
+          <Route path='/departamentos' component={Departamentos} />
           
         </Switch>
       </Router>
