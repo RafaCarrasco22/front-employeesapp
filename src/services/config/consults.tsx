@@ -1,4 +1,5 @@
 import { AXIOS_SERVICE } from "./axios-setup";
+import { User } from "./UserInterface";
 
 
 const axiosInstance = AXIOS_SERVICE;
@@ -29,4 +30,10 @@ export const getEmployees = () => {
             return error;
         }
     )
+}
+
+export const createUser = (user: User) => {
+    return axiosInstance.post(`/employees`, user)
+        .then(resp => resp)
+        .catch(err => err);
 }

@@ -4,6 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Button } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,6 +19,12 @@ const useStyles = makeStyles((theme: Theme) =>
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
+    root: {
+        '& > *': {
+          margin: theme.spacing(1),
+          width: '30ch',
+        },
+      },
   }),
 );
 
@@ -53,7 +60,22 @@ export default function TransitionsModal() {
         <Fade in={open}>
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Agregar Nuevo Employee</h2>
-            <p id="transition-modal-description">react-transition-group animates me.</p>
+            <form className={classes.root} noValidate autoComplete="off">
+                
+                <TextField id="outlined-basic" label="Nombre" variant="outlined" />
+                <TextField id="outlined-basic" label="Apellidos" variant="outlined" />
+                <br></br>
+                <TextField id="outlined-basic" label="Email" variant="outlined" />
+                <TextField id="outlined-basic" label="Phone" variant="outlined" />
+                <br></br>
+                <TextField id="outlined-basic" label="Job ID" variant="outlined" />
+                <TextField id="outlined-basic" label="Salario" variant="outlined" />
+                <br></br>
+                <TextField id="outlined-basic" label="Departamento" variant="outlined" />
+                <TextField id="outlined-basic" label="Manager" variant="outlined" />
+                <br></br>
+                <input type="submit" value="Guardar" />
+            </form>
           </div>
         </Fade>
       </Modal>
