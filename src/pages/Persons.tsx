@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
-import Link from '@material-ui/core/Link';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Title from '../layout/title';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';

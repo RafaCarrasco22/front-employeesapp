@@ -2,15 +2,8 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import { getEmployees} from '../services/config/consults';
-import { AppBar, Badge, IconButton, Toolbar } from '@material-ui/core';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import StickyHeadTable from '../components/Table';
 import TransitionsModal from '../components/Formulario';
 
