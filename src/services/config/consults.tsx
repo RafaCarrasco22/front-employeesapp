@@ -31,6 +31,19 @@ export const getEmployees = () => {
         }
     )
 }
+export const getEmployee = (id: string) => {
+    return axiosInstance.get(
+        `employees\?id=`+id
+    ).then(
+        data => {
+            return data;
+        }
+    ).catch(
+        error => {
+            return error;
+        }
+    )
+}
 
 export const createUser = (user: User) => {
     return axiosInstance.post(`/employees`, user)

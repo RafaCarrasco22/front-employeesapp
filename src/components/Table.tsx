@@ -9,6 +9,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import { getEmployees} from '../services/config/consults';
+import CharacterModal from "./Modal";
+import { IndexKind } from "typescript";
+import { Button, IconButton } from "@material-ui/core";
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 interface Column {
   id: string;
@@ -17,12 +21,18 @@ interface Column {
   align?: "right";
   format?: (value: number) => string;
 }
-
+type Props = {
+  name: string;
+  endpoint: string;
+  img: string;
+  
+};
 const columns: Column[] = [
   { id: "id", label: "#", minWidth: 25 },
   { id: "name", label: "Nombre", minWidth: 25 },
   { id: "lastName", label: "Apellidos", minWidth: 170 },
   { id: "salary", label: "Salario", minWidth: 40 },
+  
 ];
 
 const useStyles = makeStyles({
@@ -48,7 +58,8 @@ export default function StickyHeadTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [dataEmployee, setDataEmployee] = useState<null | Empleado[]>(null);
-
+  const [modal, setModal] = useState('');
+  
   const [open, setOpen] = React.useState(false);
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
@@ -72,9 +83,13 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
-  const handleOpen = () => {
+  const handleOpen= (row :any) => {
+    //console.log("Ver employee" + row.name + row.lastName);
+    console.log(row.id);
+    setModal(row.id);
     setOpen(true);
   };
+
 
   const handleClose = () => {
     setOpen(false);
@@ -118,8 +133,15 @@ export default function StickyHeadTable() {
                                 ? column.format(value)
                                 : value}
                             </TableCell>
+                            
                           );
                         })}
+                        <TableCell>
+                              {/* <Button onClick={() => handleOpen(row)}>Ver data</Button> */}
+                              <IconButton aria-label="delete"  onClick={() => handleOpen(row)}>
+                                <VisibilityIcon />
+                              </IconButton>
+                            </TableCell>
                       </TableRow>
                     );
                   })}
@@ -136,6 +158,14 @@ export default function StickyHeadTable() {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
+      {modal ? (
+        <CharacterModal
+          open={open}
+          handleClose={handleClose}
+          handleOpen={handleOpen}
+          endpoint={modal}
+        ></CharacterModal>
+      ) : null}
     </>
   );
 }
