@@ -10,8 +10,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import { getEmployees} from '../services/config/consults';
 import CharacterModal from "./Modal";
-import { IndexKind } from "typescript";
-import { Button, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 interface Column {

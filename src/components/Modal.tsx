@@ -6,8 +6,9 @@ import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import Typography from "@material-ui/core/Typography";
 import { getEmployee } from '../services/config/consults';
-import { Grid, Input, TextField } from "@material-ui/core";
+import { Grid, Hidden, Input, TextField } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const DialogContent = withStyles((theme) => ({
   root: {
@@ -61,20 +62,27 @@ interface User {
     lastName: string;
     email: string;
     phoneNumber: string;
-    hireDate: Date;
+    hireDate: string;
     jobId: number;
     salary: number;
     managerId: number;
     departmentId: number;
 }
 
+
 export default function CharacterModal(props: Props) {
     const classes = useStyles();
   const { open, handleClose, endpoint } = props;
   const [dataCharacter, setDataEmployee] = useState<null | User>(null);
-
   
-  
+  const [term, setTerm] = useState('');
+  const [nombre, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [hireDate, setDate] = useState('');
+  const [jobId, setJob] = useState('');
+  const [salary, setSal] = useState('');
+  const [department, setDep] = useState('');
 
   
   
@@ -83,8 +91,39 @@ export default function CharacterModal(props: Props) {
       getEmployee(endpoint).then(response => {
         console.log(response.data);
         setDataEmployee(response.data);
+        
       });
     }, [endpoint]);
+
+    const submitDelete = () => {
+      axios.delete("http://localhost:5051/empleados-service/employees/?id="+endpoint).then((response) => {
+        console.log(response);
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
+
+    const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    
+      axios.put("http://localhost:5051/empleados-service/employees", {
+        "id": endpoint,
+        name: term,
+        lastName: nombre,
+        email: email,
+        phoneNumber: phone,
+        hireDate: hireDate,
+        jobId: jobId,
+        salary: salary,
+        // managerId: 1,
+        departmentId: department,
+      }).then((response) => {
+        console.log(response);
+      }).catch((err) => {
+        console.log(err);
+      })
+      
+  
+  }
     
 
   return (
@@ -96,32 +135,22 @@ export default function CharacterModal(props: Props) {
       >
         <DialogContent dividers>
         <h2 id="transition-modal-title">Detalles del Empleado # {endpoint}</h2>
-          <Typography>
-          {/* {dataCharacter?[endpoint] : ''} */}
-          {/* {dataCharacter ? dataCharacter.nickname : ''} */}
-          {dataCharacter?.name}
-          </Typography>
-          <Typography>
-          {/* {dataCharacter?[endpoint] : ''} */}
-          {/* {dataCharacter ? dataCharacter.nickname : ''} */}
-          {dataCharacter?.lastName}
-          </Typography>
           <form className={classes.root} autoComplete="off" >
-                
-                <TextField id="nombre" value={dataCharacter?.name}label="Nombre" variant="outlined" required/>
-                <TextField id="lastName" label="Apellidos" variant="outlined" required/>
+            <input type="hidden" id="identi" value={endpoint}/>
+            <TextField id="nombre" value={dataCharacter?.name} label="Nombre" variant="outlined" required/>
+            <TextField id="lastName" value={dataCharacter?.lastName} label="Apellidos" variant="outlined" required/>
+            <br></br>
+            <TextField id="email" value={dataCharacter?.email}  label="Email" variant="outlined" required/>
+            <TextField id="phone" value={dataCharacter?.phoneNumber}  label="Phone" variant="outlined" required/>
+            <br></br>
+            <TextField id="jobId" value={dataCharacter?.jobId}  label="Job ID" variant="outlined" required />
+            <TextField id="salary" value={dataCharacter?.salary}  label="Salario" variant="outlined" required/>
                 <br></br>
-                <TextField id="email"  label="Email" variant="outlined" required/>
-                <TextField id="phone"  label="Phone" variant="outlined" required/>
-                <br></br>
-                <TextField id="jobId"  label="Job ID" variant="outlined" required />
-                <TextField id="salary" label="Salario" variant="outlined" required/>
-                <br></br>
-                <TextField id="departmentId" label="Departamento" variant="outlined" required/>
-                <TextField id="managerId" label="Manager" variant="outlined" />
+                <TextField id="departmentId" value={dataCharacter?.departmentId}  label="Departamento" variant="outlined" required/>
+                <TextField id="managerId" value={dataCharacter?.managerId}  label="Manager" variant="outlined" />
                 <br></br>
                 <Typography>Fecha Contrataión</Typography>
-                <Input type="date" data-date="" data-date-format="YYYY-MM-DD" required/>
+                <Input type="date" id="fecha" value={dataCharacter?.hireDate.substring(0,10)} data-date="" data-date-format="YYYY-MM-DD" required/>
                 
                 <Grid container xs={12}spacing={2} alignItems={'center'}>
                   <Grid item xs={6} md={6} >
@@ -130,7 +159,7 @@ export default function CharacterModal(props: Props) {
                   </Grid>
                   <Grid item xs={6} >
                   
-                    <Button onClick={handleClose}   variant="contained" color="secondary">Eliminar</Button>
+                    <Button onClick={submitDelete} variant="contained" color="secondary">Eliminar </Button>
                   </Grid>
                 </Grid>
             </form>
