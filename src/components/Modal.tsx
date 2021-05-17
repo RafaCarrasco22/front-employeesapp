@@ -4,9 +4,8 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import Typography from "@material-ui/core/Typography";
 import { getEmployee } from '../services/config/consults';
-import { Grid, Hidden, Input, TextField } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
@@ -63,10 +62,10 @@ interface User {
     email: string;
     phoneNumber: string;
     hireDate: string;
-    jobId: number;
-    salary: number;
-    managerId: number;
-    departmentId: number;
+    jobId: string;
+    salary: string;
+    managerId: string;
+    departmentId: string;
 }
 
 
@@ -92,20 +91,29 @@ export default function CharacterModal(props: Props) {
         console.log(response.data);
         setDataEmployee(response.data);
         
+        
+        
       });
     }, [endpoint]);
+
+    
 
     const submitDelete = () => {
       axios.delete("http://localhost:5051/empleados-service/employees/?id="+endpoint).then((response) => {
         console.log(response);
+        alert("Empleado #" + endpoint + " ha sido eliminado!");
+        window.location.reload();
       }).catch((err) => {
         console.log(err);
       })
     }
 
-    const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    
-      axios.put("http://localhost:5051/empleados-service/employees", {
+    // const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+      const submitHandler = () => {
+        console.log(term);
+        console.log(email);
+        console.log(nombre);
+        axios.patch("http://localhost:5051/empleados-service/employees", {
         "id": endpoint,
         name: term,
         lastName: nombre,
@@ -121,9 +129,8 @@ export default function CharacterModal(props: Props) {
       }).catch((err) => {
         console.log(err);
       })
+      }
       
-  
-  }
     
 
   return (
@@ -135,36 +142,73 @@ export default function CharacterModal(props: Props) {
       >
         <DialogContent dividers>
         <h2 id="transition-modal-title">Detalles del Empleado # {endpoint}</h2>
-          <form className={classes.root} autoComplete="off" >
+          <form className={classes.root} autoComplete="off"  >
             <input type="hidden" id="identi" value={endpoint}/>
-            <TextField id="nombre" value={dataCharacter?.name} label="Nombre" variant="outlined" required/>
-            <TextField id="lastName" value={dataCharacter?.lastName} label="Apellidos" variant="outlined" required/>
+            <TextField 
+              id="nombre" 
+              onChange={(
+                  ev: React.ChangeEvent<HTMLInputElement>,
+              ): void => setTerm(ev.target.value)} 
+              value={dataCharacter?.name} 
+              label="Nombre" 
+              variant="outlined" 
+              required 
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField id="lastName" defaultValue={dataCharacter?.lastName} onChange={(
+                  ev: React.ChangeEvent<HTMLInputElement>,
+              ): void => setName(ev.target.value)} label="Apellidos" variant="outlined" required/>
             <br></br>
-            <TextField id="email" value={dataCharacter?.email}  label="Email" variant="outlined" required/>
-            <TextField id="phone" value={dataCharacter?.phoneNumber}  label="Phone" variant="outlined" required/>
+            <TextField id="email" defaultValue={dataCharacter?.email} onChange={(
+                  ev: React.ChangeEvent<HTMLInputElement>,
+              ): void => setEmail(ev.target.value)} label="Email" variant="outlined" required/>
+            <TextField id="phone" defaultValue={dataCharacter?.phoneNumber} onChange={(
+                  ev: React.ChangeEvent<HTMLInputElement>,
+              ): void => setPhone(ev.target.value)} label="Phone" variant="outlined" required inputProps={{ maxLength: 12 }}/>
             <br></br>
-            <TextField id="jobId" value={dataCharacter?.jobId}  label="Job ID" variant="outlined" required />
-            <TextField id="salary" value={dataCharacter?.salary}  label="Salario" variant="outlined" required/>
+            <TextField id="jobId" defaultValue={dataCharacter?.jobId} onChange={(
+                  ev: React.ChangeEvent<HTMLInputElement>,
+              ): void => setJob(ev.target.value)} label="Job ID" variant="outlined" required />
+            <TextField id="salary" defaultValue={dataCharacter?.salary} onChange={(
+                  ev: React.ChangeEvent<HTMLInputElement>,
+              ): void => setSal(ev.target.value)} label="Salario" variant="outlined" required/>
                 <br></br>
-                <TextField id="departmentId" value={dataCharacter?.departmentId}  label="Departamento" variant="outlined" required/>
-                <TextField id="managerId" value={dataCharacter?.managerId}  label="Manager" variant="outlined" />
+                <TextField id="departmentId" defaultValue={dataCharacter?.departmentId} onChange={(
+                  ev: React.ChangeEvent<HTMLInputElement>,
+              ): void => setDep(ev.target.value)} label="Departamento" variant="outlined" required/>
+                <TextField id="managerId" defaultValue={dataCharacter?.managerId}  label="Manager" variant="outlined" />
                 <br></br>
-                <Typography>Fecha Contrataión</Typography>
-                <Input type="date" id="fecha" value={dataCharacter?.hireDate.substring(0,10)} data-date="" data-date-format="YYYY-MM-DD" required/>
                 
+                <TextField
+                    id="date"
+                    label="Fecha Conntratación"
+                    type="date"
+                    defaultValue={dataCharacter?.hireDate.substring(0,10)}
+                    onChange={(
+                      ev: React.ChangeEvent<HTMLInputElement>,
+                  ): void => setDate(ev.target.value)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+
                 <Grid container xs={12}spacing={2} alignItems={'center'}>
                   <Grid item xs={6} md={6} >
-                    <Button type="submit" variant="outlined" color="secondary">Actualizar</Button> 
-                  
+                    {/* <Button type="submit" variant="outlined" color="secondary" >Actualizar</Button>  */}
+                    <Button onClick={submitHandler} variant="contained" color="secondary">acakljdkas </Button>
                   </Grid>
                   <Grid item xs={6} >
+                          <Button onClick={submitDelete} variant="contained" color="secondary">Eliminar </Button>
+                        </Grid>
                   
-                    <Button onClick={submitDelete} variant="contained" color="secondary">Eliminar </Button>
-                  </Grid>
                 </Grid>
             </form>
+            
         </DialogContent>
         <DialogActions>
+        
           <Button autoFocus onClick={handleClose} color="primary">
             Cancelar
           </Button>

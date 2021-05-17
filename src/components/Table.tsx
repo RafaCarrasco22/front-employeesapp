@@ -20,12 +20,7 @@ interface Column {
   align?: "right";
   format?: (value: number) => string;
 }
-type Props = {
-  name: string;
-  endpoint: string;
-  img: string;
-  
-};
+
 const columns: Column[] = [
   { id: "id", label: "#", minWidth: 25 },
   { id: "name", label: "Nombre", minWidth: 25 },
@@ -60,8 +55,6 @@ export default function StickyHeadTable() {
   const [modal, setModal] = useState('');
   
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = useState("");
-  const [url, setUrl] = useState("");
 
   
     useEffect(() => {
@@ -92,8 +85,6 @@ export default function StickyHeadTable() {
 
   const handleClose = () => {
     setOpen(false);
-    setName("");
-    setUrl("");
   };
 
   return (
